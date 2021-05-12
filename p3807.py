@@ -22,7 +22,7 @@ def c(n,m,p=None):
 	else:
 		if n<p and m<p:
 			if n<m:
-				return 1
+				return 0
 			ans=1
 			for i in range(m+1,n+1):
 				ans=ans*i%p
