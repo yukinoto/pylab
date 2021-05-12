@@ -1,25 +1,38 @@
-cache=input().split()
-n,m,p=int(cache[0]),int(cache[1]),int(cache[2])
-
-def exeu(a,b,&x,&y):
-	if b==0:
-		x,y=1,0
-		return
-	exeu(b,a%b,y,x)
-	y-=a//b*x
-	return
-
-def anti(n,mod=p):
-	x,y=0,0
-	exeu(n,mod,x,y)
-	return x%mod
-
-def c(u,d,mod=p):
-	if u<p and d<p:
+def pe(n,p=None):
+	if p is None:
 		ans=1
-		for i in range(u+1,d+1):
-			ans=ans*i%p
-		for i in range(2,d-u+1):
-			ans=ans*anti(i)%p
+		for i in range(2,n+1):
+			ans*=i
 		return ans
-	
+	else:
+		if n>p:
+			return 0
+		else:
+			ans=1
+			for i in range(2,n+1):
+				ans=ans*i%p
+			return ans
+
+def anti(x,p):
+	return pow(x,p-2,p)
+
+def c(n,m,p=None):
+	if p is None:
+		return pe(n)//pe(m)//pe(n-m)
+	else:
+		if n<p and m<p:
+			if n<m:
+				return 1
+			ans=1
+			for i in range(m+1,n+1):
+				ans=ans*i%p
+			ans*=anti(pe(n-m,p),p)
+			return ans%p
+		else:
+			return c(n//p,m//p,p)*c(n%p,m%p,p)%p
+
+t=int(input())
+for i in range(0,t):
+	cache=input().split()
+	n,m,p=int(cache[0]),int(cache[1]),int(cache[2])
+	print(c(n+m,n,p))
